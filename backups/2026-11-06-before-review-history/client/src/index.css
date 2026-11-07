@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Native scrollbars and form controls follow the theme (dark scrollbars in dark mode). */
+  color-scheme: light;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  /* App-specific status colours used for badges and stats. */
+  --success: oklch(0.6 0.15 150);
+  --warning: oklch(0.72 0.16 70);
+  --info: oklch(0.6 0.15 245);
+  /* Expanded detail panels inside tables (e.g. a QC result under its ticket row). Darker than
+     --muted, which table rows already use for hover, so the panel never looks like a row. */
+  --panel: oklch(0.925 0.004 250);
+  /* Top navigation bar: a dark navy in both themes. The bar also carries the .dark class so the
+     buttons, links and switch inside it use their dark-theme colours and stay readable on it. */
+  --nav: oklch(0.255 0.04 262);
+  --nav-border: oklch(0.2 0.035 262);
+}
+
+/* Dark theme: the bar goes a step darker than the page (0.145) so it still stands apart. Set on
+   :root only, because the bar itself has .dark and must keep inheriting these values. */
+:root.dark {
+  --nav: oklch(0.115 0.02 262);
+  --nav-border: oklch(1 0 0 / 8%);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --success: oklch(0.72 0.16 150);
+  --warning: oklch(0.8 0.15 75);
+  --info: oklch(0.7 0.14 245);
+  --panel: oklch(0.165 0.004 250);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-panel: var(--panel);
+  --color-nav: var(--nav);
+  --color-nav-border: var(--nav-border);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Zendesk comment HTML (Ticket Inspector), sanitised; inline styles are removed so it follows the theme. */
+@layer components {
+  /* flow-root keeps floated content (e.g. align="left" tables or images from email HTML) inside
+     the comment card instead of spilling below it. */
+  .rich-text {
+    @apply text-sm leading-relaxed break-words;
+    display: flow-root;
+  }
+  .rich-text > * + * {
+    @apply mt-2;
+  }
+  .rich-text p,
+  .rich-text div {
+    @apply min-h-[1em];
+  }
+  .rich-text a {
+    @apply text-info underline-offset-2 hover:underline;
+  }
+  .rich-text ul {
+    @apply ms-5 list-disc;
+  }
+  .rich-text ol {
+    @apply ms-5 list-decimal;
+  }
+  .rich-text li + li {
+    @apply mt-1;
+  }
+  .rich-text h1,
+  .rich-text h2,
+  .rich-text h3,
+  .rich-text h4 {
+    @apply font-semibold;
+  }
+  .rich-text blockquote {
+    @apply border-s-2 ps-3 text-muted-foreground;
+  }
+  .rich-text pre {
+    @apply overflow-x-auto rounded-md bg-muted p-2 font-mono text-xs whitespace-pre-wrap;
+  }
+  .rich-text code {
+    @apply rounded bg-muted px-1 font-mono text-xs;
+  }
+  .rich-text pre code {
+    @apply bg-transparent p-0;
+  }
+  .rich-text table {
+    @apply block max-w-full overflow-x-auto border-collapse text-xs;
+    float: none;
+  }
+  .rich-text th,
+  .rich-text td {
+    @apply border px-2 py-1 align-top;
+  }
+  .rich-text img {
+    @apply inline-block h-auto max-w-full rounded border;
+  }
+  .rich-text hr {
+    @apply my-3;
+  }
+}
